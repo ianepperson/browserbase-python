@@ -24,6 +24,7 @@ ENVIRON_API_KEY = "BROWSERBASE_API_KEY"
 ENVIRON_PROJECT_ID = "BROWSERBASE_PROJECT_ID"
 
 SESSION_CDP_URL = "wss://www.browserbase.com"
+SESSION_WEBDRIVER_URL = "http://connect.browserbase.com/webdriver"
 
 
 ST = TypeVar("ST", bound=SyncSession)
@@ -114,13 +115,19 @@ class BrowserbaseCore(abc.ABC, Generic[ST, AT]):
     # Session management utilities
     #
 
-    def get_http_headers(self) -> Headers:
+    def get_http_headers(
+        self, session: Optional[BaseSession] = None
+    ) -> Headers:
         """
         Get the headers necessary for HTTP communication to the API.
 
         This will include the required API key.
         """
-        return Headers({"x-bb-api-key": self._api_key})
+        headers = Headers({"x-bb-api-key": self._api_key})
+        if session is not None and session.id:
+            headers["session-id"] = session.id
+
+        return headers
 
     def get_cdp_url(
         self, session: Optional[BaseSession] = None, **kwargs
