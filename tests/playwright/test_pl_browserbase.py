@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager, contextmanager
 
 import pytest
 from mock import MagicMock, AsyncMock
-from playwright.async_api import Playwright as SyncPlaywright
+from playwright.async_api import Browser, Playwright as SyncPlaywright
 from playwright.sync_api import Playwright as AsyncPlaywright
 from respx import MockRouter
 
@@ -17,19 +17,27 @@ class PlaywrightMock:
             playwright.do_stuff()
     >>> assert playwright.sync_mock.do_stuff.called
 
-    >>> async with playwright.ssync() as playwright:
+    >>> async with playwright.async() as playwright:
             await playwright.do_stuff()
     >>> assert playwright.async_mock.do_stuff.called
     """
 
+    # This is a complex library to Mock out.
+
     def __init__(self):
         self.sync_mock = MagicMock(spec=SyncPlaywright)
-        self.async_mock = AsyncMock(spec=AsyncPlaywright)
-        self.async_browser = AsyncMock()
+        self._async_mock = MagicMock(spec=AsyncPlaywright)
 
-        self.async_mock.chromium.connect_over_cdp.return_value = (
-            self.async_browser()
-        )
+    @property
+    def async_mock(self):
+        # Only instantiate the async methods when accessed to prevent
+        # creating async objects that don't get awaited.
+        self.async_browser = MagicMock(spec=Browser)
+        connect_cdp = AsyncMock(return_value=self.async_browser)
+        self._async_mock.chromium.connect_over_cdp.side_effect = connect_cdp
+
+        self.async_page = self.async_browser.contexts[0].pages[0]
+        return self._async_mock
 
     @contextmanager
     def sync(self):
@@ -106,6 +114,7 @@ async def test_get_new_pl_asession(
     mock_session_response,
     respx_mock: MockRouter,
     playwright: PlaywrightMock,
+    api_key: str,
     session_id: str,
     mocker,
 ):
@@ -132,21 +141,19 @@ async def test_get_new_pl_asession(
         assert last_request.url.path == "/v1/sessions"
 
         # Ensure that the mocked page object was returned
-        assert isinstance(session.page, MagicMock)
+        assert session.page is playwright.async_page
 
     # Should not have sent the request to end the session
     assert (
         last_request == respx_mock.calls.last.request
     ), "Additional unexpected call made after session close."
 
-    # The playwright browser should have been called with await
-    playwright.async_browser.assert_awaited_once()
-
-    # Not working, not sure why TODO: fix
-    # assert (
-    #     playwright.async_mock.chromium.connect_over_cdp.await_args.args[0]
-    #     == f"wss://www.browserbase.com?apiKey={api_key}&sessionId={session_id}"
-    # )
+    # The playwright connect should have been called
+    assert playwright.async_mock.chromium.connect_over_cdp.called
+    assert (
+        playwright.async_mock.chromium.connect_over_cdp.call_args[0][0]
+        == f"wss://www.browserbase.com?apiKey={api_key}&sessionId={session_id}"
+    )
 
 
 def test_get_pl_page(
@@ -179,6 +186,7 @@ def test_get_pl_page(
 async def test_get_pl_apage(
     bbase: Browserbase,
     playwright: PlaywrightMock,
+    api_key: str,
     mocker,
 ):
     """
@@ -191,13 +199,11 @@ async def test_get_pl_apage(
 
     async with bbase.apage() as page:
         # Ensure that the mocked page object was returned
-        assert isinstance(page, MagicMock)
+        assert page is playwright.async_page
 
     # The playwright browser should have been called with await
-    playwright.async_browser.assert_awaited_once()
-
-    # Not working, not sure why TODO: fix
-    # assert (
-    #     playwright.async_mock.chromium.connect_over_cdp.await_args.args[0]
-    #     == f"wss://www.browserbase.com?apiKey={api_key}&sessionId={session_id}"
-    # )
+    assert playwright.async_mock.chromium.connect_over_cdp.called
+    assert (
+        playwright.async_mock.chromium.connect_over_cdp.call_args[0][0]
+        == f"wss://www.browserbase.com?apiKey={api_key}"
+    )
