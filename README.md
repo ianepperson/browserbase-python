@@ -64,7 +64,8 @@ await bbase.alist_sessions()
 ```
 ## Usage with Playwright
 
-When creating a session, a [Playwright Page](https://playwright.dev/python/docs/api/class-page) is available on the session object.
+When creating a session, a [Playwright Page](https://playwright.dev/python/docs/api/class-page)
+is available via the session `page` property to control the remote Browserbase browser.
 
 ```python
 from browserbase.playwright import Browserbase
@@ -79,8 +80,9 @@ with bbase.session() as session:
     print(session.page.title)
 ```
 
-If you don't need access to the Browserbase session object, you can ask for just the Playwright page.
-Doing so saves an extra API call behind the scenes, and so is a bit faster.
+If you don't need access to the Browserbase session object nor need to provide any extra session options,
+you can ask for just a Playwright page. Doing so saves an extra API call behind the scenes,
+and so is a bit faster.
 
 ```python
 with bbase.page() as page:
@@ -108,7 +110,8 @@ async with bbase.apage() as page:
 
 ## Usage with Selenium
 
-When creating a session, a [Selenium WebDriver](https://selenium-python.readthedocs.io/api.html#selenium.webdriver.remote.webdriver.WebDriver) is available on the session object.
+When creating a session, a [Selenium WebDriver](https://selenium-python.readthedocs.io/api.html#selenium.webdriver.remote.webdriver.WebDriver)
+is available via the session `driver` property to control the remote Browserbase browser.
 
 ```python
 from browserbase.selenium import Browserbase
@@ -118,7 +121,7 @@ bbase = Browserbase()
 
 # Create a session
 with bbase.session() as session:
-    # The session.driver object is a Selenium Driver
+    # The session.driver object is a Selenium WebDriver
     session.driver.get("https://www.sfmoma.com")
     print(session.page.title)
 ```
