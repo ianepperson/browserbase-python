@@ -62,7 +62,7 @@ awync with bbase.asession() as session:
 # Get a list of all sessions
 await bbase.alist_sessions()
 ```
-### Usage with Playwright
+## Usage with Playwright
 
 ```python
 from browserbase.playwright import Browserbase
@@ -103,3 +103,22 @@ async with bbase.apage() as page:
     await page.goto("https://www.sfmoma.com")
     print(page.title)
 ```
+
+## Usage with Selenium
+
+```python
+from browserbase.selenium import Browserbase
+
+# Initialize the library
+bbase = Browserbase()
+
+# Create a session
+with bbase.session() as session:
+    # The session.driver object is a Selenium Driver
+    session.driver.get("https://www.sfmoma.com")
+    print(session.page.title)
+```
+
+#### Async
+
+The Selenium Python library does not support async operations.
