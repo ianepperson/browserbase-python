@@ -17,11 +17,11 @@ or, if you're using [Poetry](https://python-poetry.org) to manage your Python en
 poetry install browserbase
 ```
 
-### Automation Framework
+#### Automation Framework
 
 The core Browserbase library provides an interface to the Browserbase services, but most users will want to also use
-an automation framework like [Playwright](https://playwright.dev/python/) (recommended) or [Selenium](https://selenium-python.readthedocs.io).
-This package provides helper methods to streamline those interactions.
+an automation framework like [Playwright](https://playwright.dev/python/) (recommended) or [Selenium](https://selenium-python.readthedocs.io)
+to control the remote browser. This package provides helper methods to automate interacting with those frameworks.
 
 To install the extra requirements, tell your package installer to include
 - `playwright`
@@ -68,6 +68,7 @@ awync with bbase.asession() as session:
 await bbase.alist_sessions()
 ```
 ## Usage with Playwright
+*Only available if the Playwright Python package is installed, as noted above.*
 
 When creating a session, a [Playwright Page](https://playwright.dev/python/docs/api/class-page)
 is available via the session `page` property to control the remote Browserbase browser.
@@ -114,6 +115,7 @@ async with bbase.apage() as page:
 ```
 
 ## Usage with Selenium
+*Only available if the Selenium Python package is installed, as noted above.*
 
 When creating a session, a [Selenium WebDriver](https://selenium-python.readthedocs.io/api.html#selenium.webdriver.remote.webdriver.WebDriver)
 is available via the session `driver` property to control the remote Browserbase browser.
