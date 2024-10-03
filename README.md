@@ -19,20 +19,25 @@ poetry install browserbase
 
 ### Automation Framework
 
-The core Browserbase library provides an interface to the Browserbase services. Most users will want to also use
+The core Browserbase library provides an interface to the Browserbase services, but most users will want to also use
 an automation framework like [Playwright](https://playwright.dev/python/) (recommended) or [Selenium](https://selenium-python.readthedocs.io).
-This library provides helper methods to streamline those interactions. To install the extra requirements, tell the installer to include either
-`selenium` or `playwright`:
+This package provides helper methods to streamline those interactions.
+
+To install the extra requirements, tell your package installer to include
+- `playwright`
+- `selenium`
+- or both `selenium,playwright`
+
+Like so:
 
 ```sh
 pip install browserbase[playwright]
 ```
- -- or --
-```sh
-poetry install --extras "playwright"
-```
+with Poetry:
 
-To include both, use `playwright,selenium`.
+```sh
+poetry add --extras "playwright"
+```
 
 ## Usage
 
