@@ -17,7 +17,7 @@ from httpx import Headers
 
 from .api_models import SESSIONSTATUS, Fingerprint, Viewport
 from .async_session import AsyncSession
-from .base_session import SESSIONS_URL, BaseSession
+from .base_session import SESSIONS_API_URL, BaseSession
 from .sync_session import SyncSession
 
 ENVIRON_API_KEY = "BROWSERBASE_API_KEY"
@@ -293,7 +293,7 @@ class BrowserbaseCore(abc.ABC, Generic[ST, AT]):
         else:
             params = {}
 
-        response = httpx.get(SESSIONS_URL, params=params, headers=headers)
+        response = httpx.get(SESSIONS_API_URL, params=params, headers=headers)
         response.raise_for_status()
 
         return [
@@ -317,7 +317,7 @@ class BrowserbaseCore(abc.ABC, Generic[ST, AT]):
 
         async with httpx.AsyncClient() as client:
             response = await client.get(
-                SESSIONS_URL, params=params, headers=headers
+                SESSIONS_API_URL, params=params, headers=headers
             )
         response.raise_for_status()
 

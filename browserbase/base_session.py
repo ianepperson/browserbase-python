@@ -10,7 +10,8 @@ if TYPE_CHECKING:
 logger = getLogger("browserbase")
 logger.propagate = False  # Don't roll logs up to the root logger
 
-SESSIONS_URL = "https://www.browserbase.com/v1/sessions"
+SESSIONS_API_URL = "https://www.browserbase.com/v1/sessions"
+SESSIONS_WEB_URL = "https://www.browserbase.com/sessions"
 
 
 class BaseSession:
@@ -61,6 +62,12 @@ class BaseSession:
         if not self._api_response:
             return ""
         return self._api_response.id
+
+    @property
+    def url(self) -> Optional[str]:
+        if not self.id:
+            return None
+        return f"{SESSIONS_WEB_URL}/{self.id}"
 
     @property
     def created_at(self) -> datetime:

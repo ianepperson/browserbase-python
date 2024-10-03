@@ -8,7 +8,7 @@ from .api_models import (
     SessionRecording,
     SessionResponse,
 )
-from .base_session import SESSIONS_URL, BaseSession
+from .base_session import SESSIONS_API_URL, BaseSession
 
 logger = getLogger("browserbase")
 logger.propagate = False  # Don't roll logs up to the root logger
@@ -42,7 +42,7 @@ class AsyncSession(BaseSession):
 
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                SESSIONS_URL, json=json, headers=headers
+                SESSIONS_API_URL, json=json, headers=headers
             )
             response.raise_for_status()
 
@@ -58,7 +58,7 @@ class AsyncSession(BaseSession):
             logger.info("session.end called, but the session is not started.")
             return
 
-        url = f"{SESSIONS_URL}/{self.id}"
+        url = f"{SESSIONS_API_URL}/{self.id}"
         headers = self._browserbase.get_http_headers()
         json = self._end_session_options.model_dump()
 
@@ -86,7 +86,7 @@ class AsyncSession(BaseSession):
         >>>     await session.get_zipped_downloads(file)
 
         """
-        url = f"{SESSIONS_URL}/{self.id}/downloads"
+        url = f"{SESSIONS_API_URL}/{self.id}/downloads"
         headers = self._browserbase.get_http_headers()
         async with httpx.AsyncClient() as client:
             response = await client.get(url, headers=headers)
@@ -100,7 +100,7 @@ class AsyncSession(BaseSession):
         """
         Get URLs that can be used to connect to a live session.
         """
-        url = f"{SESSIONS_URL}/{self.id}/debug"
+        url = f"{SESSIONS_API_URL}/{self.id}/debug"
         headers = self._browserbase.get_http_headers()
         async with httpx.AsyncClient() as client:
             response = await client.get(url, headers=headers)
@@ -114,7 +114,7 @@ class AsyncSession(BaseSession):
         """
         Get all the logs for the session.
         """
-        url = f"{SESSIONS_URL}/{self.id}/logs"
+        url = f"{SESSIONS_API_URL}/{self.id}/logs"
         headers = self._browserbase.get_http_headers()
         async with httpx.AsyncClient() as client:
             response = await client.get(url, headers=headers)
@@ -132,7 +132,7 @@ class AsyncSession(BaseSession):
         """
         Get all the recordings for the session.
         """
-        url = f"{SESSIONS_URL}/{self.id}/recording"
+        url = f"{SESSIONS_API_URL}/{self.id}/recording"
         headers = self._browserbase.get_http_headers()
         async with httpx.AsyncClient() as client:
             response = await client.get(url, headers=headers)

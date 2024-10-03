@@ -16,6 +16,7 @@ def test_blank_session(bbase: Browserbase):
     assert new_session.expires_at is None
     assert new_session.status is None
     assert new_session.duration is None
+    assert new_session.url is None
 
 
 def test_returned_session(session, session_id: str):
@@ -31,6 +32,7 @@ def test_returned_session(session, session_id: str):
     assert session.expires_at is not None
     assert session.expires_at.year == 2024
     assert session.status == "RUNNING"
+    assert session.url == f"https://www.browserbase.com/sessions/{session_id}"
 
 
 def test_session_duration(bbase: Browserbase, sample_session_response_json):
