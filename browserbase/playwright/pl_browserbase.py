@@ -3,6 +3,7 @@ from typing import AsyncGenerator, Generator, Optional
 
 from playwright.async_api import async_playwright
 from playwright.sync_api import sync_playwright
+from playwright._impl._errors import Error as PlaywrightError
 
 from ..api_models import CreateSessionOptions, Fingerprint, Viewport
 from ..core import BrowserbaseCore

@@ -23,7 +23,7 @@ from .sync_session import SyncSession
 ENVIRON_API_KEY = "BROWSERBASE_API_KEY"
 ENVIRON_PROJECT_ID = "BROWSERBASE_PROJECT_ID"
 
-SESSION_CDP_URL = "wss://www.browserbase.com"
+SESSION_CDP_URL = "wss://connect.browserbase.com"
 SESSION_WEBDRIVER_URL = "http://connect.browserbase.com/webdriver"
 
 

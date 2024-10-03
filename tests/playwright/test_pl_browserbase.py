@@ -104,7 +104,8 @@ def test_get_new_pl_session(
     # The playwright session manager should have been called
     assert (
         playwright.sync_mock.chromium.connect_over_cdp.call_args.args[0]
-        == f"wss://www.browserbase.com?apiKey={api_key}&sessionId={session_id}"
+        == f"wss://connect.browserbase.com?"
+        f"apiKey={api_key}&sessionId={session_id}"
     )
 
 
@@ -152,7 +153,8 @@ async def test_get_new_pl_asession(
     assert playwright.async_mock.chromium.connect_over_cdp.called
     assert (
         playwright.async_mock.chromium.connect_over_cdp.call_args[0][0]
-        == f"wss://www.browserbase.com?apiKey={api_key}&sessionId={session_id}"
+        == f"wss://connect.browserbase.com?"
+        f"apiKey={api_key}&sessionId={session_id}"
     )
 
 
@@ -178,7 +180,7 @@ def test_get_pl_page(
     # The playwright session manager should have been called
     assert (
         playwright.sync_mock.chromium.connect_over_cdp.call_args.args[0]
-        == f"wss://www.browserbase.com?apiKey={api_key}"
+        == f"wss://connect.browserbase.com?apiKey={api_key}"
     )
 
 
@@ -205,5 +207,5 @@ async def test_get_pl_apage(
     assert playwright.async_mock.chromium.connect_over_cdp.called
     assert (
         playwright.async_mock.chromium.connect_over_cdp.call_args[0][0]
-        == f"wss://www.browserbase.com?apiKey={api_key}"
+        == f"wss://connect.browserbase.com?apiKey={api_key}"
     )

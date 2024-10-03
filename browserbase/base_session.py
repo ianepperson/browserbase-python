@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from logging import getLogger
 from typing import TYPE_CHECKING, Optional
 
@@ -131,7 +131,9 @@ class BaseSession:
         # TODO: To account for clock differences, save the local time when the
         # client thinks the request was created, and compare that to the time
         # in the response, then add that adjustment to this calculation.
-        if self.expires_at is not None and self.expires_at >= datetime.now():
+        if self.expires_at is not None and self.expires_at >= datetime.now(
+            timezone.utc
+        ):
             self._implicit_end = True
 
     @property

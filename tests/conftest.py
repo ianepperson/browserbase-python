@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 import httpx
 import pytest
@@ -29,8 +29,8 @@ def bbase(api_key, project_id) -> Browserbase:
 @pytest.fixture
 def sample_session_response_json(project_id, session_id):
 
-    now = datetime(2024, 2, 28, 11, 55, 45, 1000)
-    soon = datetime(2024, 2, 28, 12, 15, 45, 1000)
+    now = datetime(2024, 2, 28, 11, 55, 45, 1000, tzinfo=timezone.utc)
+    soon = datetime(2024, 2, 28, 12, 15, 45, 1000, tzinfo=timezone.utc)
     timestamp = now.isoformat()
     return {
         "id": session_id,
