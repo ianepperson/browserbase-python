@@ -43,8 +43,15 @@ class SeleniumBrowserbase(BrowserbaseCore[SeleniumSession, AsyncSession]):
             try:
                 yield session
             finally:
-                # Closing the Selenium session will normally end the
-                # session.
+                try:
+                    driver.quit()
+                except KeyError:
+                    # If the driver has already quit, this will throw a
+                    # KeyError as it tries to read invalid JSON.
+                    pass
+
+                # Closing the Selenium driver session will normally end the
+                # Browserbase session.
                 session.implicit_end = True
 
     async def asession(self, *_, **__):
