@@ -64,6 +64,8 @@ await bbase.alist_sessions()
 ```
 ## Usage with Playwright
 
+When creating a session, a [Playwright Page](https://playwright.dev/python/docs/api/class-page) is available on the session object.
+
 ```python
 from browserbase.playwright import Browserbase
 
@@ -105,6 +107,8 @@ async with bbase.apage() as page:
 ```
 
 ## Usage with Selenium
+
+When creating a session, a [Selenium WebDriver](https://selenium-python.readthedocs.io/api.html#selenium.webdriver.remote.webdriver.WebDriver) is available on the session object.
 
 ```python
 from browserbase.selenium import Browserbase
