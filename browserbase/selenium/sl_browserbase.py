@@ -1,6 +1,8 @@
 from contextlib import contextmanager
 from typing import Generator, Optional
 
+from selenium.webdriver import ChromeOptions
+
 from ..api_models import CreateSessionOptions, Fingerprint, Viewport
 from ..async_session import AsyncSession
 from ..core import SESSION_WEBDRIVER_URL, BrowserbaseCore
@@ -20,6 +22,7 @@ class SeleniumBrowserbase(BrowserbaseCore[SeleniumSession, AsyncSession]):
         fingerprint: Optional[Fingerprint] = None,
         viewport: Optional[Viewport] = None,
         enable_proxy: bool = False,
+        selenium_chrome_options: Optional[ChromeOptions] = None,
     ) -> Generator[SeleniumSession, None, None]:
         # Create sessions with a driver property, all connected and ready to use.
 
@@ -36,7 +39,7 @@ class SeleniumBrowserbase(BrowserbaseCore[SeleniumSession, AsyncSession]):
         with self._session_manager(new_session) as session:
             # Connect the Selenium driver to the remote session
             connection = BrowserbaseConnection(session, SESSION_WEBDRIVER_URL)
-            driver = connection.get_driver()
+            driver = connection.get_driver(selenium_chrome_options)
 
             session.driver = driver
 
