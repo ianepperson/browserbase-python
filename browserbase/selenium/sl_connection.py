@@ -1,3 +1,9 @@
+"""
+A class to use with Selenium to connect to a Browserbase service.
+
+For internal use.
+"""
+
 from typing import Optional
 from selenium.webdriver import Remote, ChromeOptions
 from selenium.webdriver.remote.remote_connection import RemoteConnection

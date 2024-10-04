@@ -1,3 +1,7 @@
+"""
+Pydantic models for communication with the Browserbase API.
+"""
+
 from datetime import datetime
 from typing import Any, Literal, Optional
 

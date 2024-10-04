@@ -1,3 +1,7 @@
+"""
+Playwright session object implements Playwright specific session logic.
+"""
+
 from typing import Generic, Optional, TypeVar
 
 from playwright.async_api import Page as AsyncPage
@@ -10,6 +14,10 @@ P = TypeVar("P", SyncPage, AsyncPage)
 
 
 class PlaywrightSessionMixin(Generic[P]):
+    """
+    Mixin for adding the page property.
+    """
+
     _page: Optional[P] = None
 
     @property

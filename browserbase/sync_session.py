@@ -1,3 +1,7 @@
+"""
+Implementation of the BaseSession that performs syncronous API interactions.
+"""
+
 from logging import getLogger
 from typing import IO
 
@@ -26,7 +30,7 @@ class SyncSession(BaseSession):
     """
 
     #
-    # Session management - Sync
+    # Session management
     #
 
     def start(self) -> str:
@@ -72,6 +76,10 @@ class SyncSession(BaseSession):
         response.raise_for_status()
 
         self._api_response = SessionResponse.model_validate_json(response.text)
+
+    #
+    # Other session interactions
+    #
 
     def get_zipped_downloads(self, file_io: IO) -> None:
         """

@@ -1,3 +1,12 @@
+"""
+Base class for all Browserbase Session objects.
+
+This class manages common properties and generally has no side-effects.
+It perfroms no API interactions.
+
+The derived SyncSession and AsyncSession classes implment the API interactions.
+"""
+
 from datetime import datetime, timedelta, timezone
 from logging import getLogger
 from typing import TYPE_CHECKING, Optional
@@ -156,3 +165,16 @@ class BaseSession:
     @implicit_end.setter
     def implicit_end(self, value: bool):
         self._implicit_end = value
+
+    #
+    # API interactions
+    #
+    # To be implemented by derived classes, in a sync or async manner.
+    #
+
+    def start(self): ...
+    def end(self): ...
+    def get_zipped_downloads(self, _): ...
+    def get_live_urls(self): ...
+    def get_logs(self): ...
+    def get_recording(self): ...

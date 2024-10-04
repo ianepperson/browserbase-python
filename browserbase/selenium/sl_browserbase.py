@@ -1,3 +1,7 @@
+"""
+A BrowserbaseCore implementation that also manages a Selenium session.
+"""
+
 from contextlib import contextmanager
 from typing import Generator, Optional
 
