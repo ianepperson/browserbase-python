@@ -78,16 +78,16 @@ the items that are to be used by the consumers of this package.
 
 
 * `core.BrowserbaseCore`: The abstract class that all Browserbase classes inherit from.
- * `browserbase.Browserbase`: The most simple implementation of the above.
- * `playwright.pl_browserbase.Browserbase`: Implementation that also manages Playwright sessions.
- * `selenium.sl_browserbase.Browserbase`: Implementation that also manages Selenium sessions.
+  * `browserbase.Browserbase`: The most simple implementation of the above.
+  * `playwright.pl_browserbase.Browserbase`: Implementation that also manages Playwright sessions.
+  * `selenium.sl_browserbase.Browserbase`: Implementation that also manages Selenium sessions.
 
 * `base_session.BaseSession`: Base class for all sessions. Implments no API interactions.
- * `sync_session.SyncSession`: Implements all session-specific API interactions.
-  * `playwright.pl_session.PlaywrightSyncSession`: Adds in Playwright specific logic
-  * `selenium.sl_session.SeleniumSession`: Adds in Selenium specific logic
- * `async_session.AxyncSession`: Implements all session-specific async API interactions.
-  * `playwright.pl_session.PlaywrightAsyncSession`: Adds in Playwright specific logic
+  * `sync_session.SyncSession`: Implements all session-specific API interactions.
+    * `playwright.pl_session.PlaywrightSyncSession`: Adds in Playwright specific logic
+    * `selenium.sl_session.SeleniumSession`: Adds in Selenium specific logic
+  * `async_session.AxyncSession`: Implements all session-specific async API interactions.
+    * `playwright.pl_session.PlaywrightAsyncSession`: Adds in Playwright specific logic
 
 ## Logs
 
