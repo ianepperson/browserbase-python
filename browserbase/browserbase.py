@@ -1,3 +1,11 @@
+"""
+Implement the basic Browserbase object to be used for interacting with
+the Browserbase service.
+
+Provides a concrete implementation of the session and asession
+context managers.
+"""
+
 from typing import AsyncContextManager, ContextManager, Optional
 
 from .api_models import CreateSessionOptions, Fingerprint, Viewport

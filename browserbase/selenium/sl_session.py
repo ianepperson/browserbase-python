@@ -1,3 +1,7 @@
+"""
+Selenium session object implements Selenium specific session logic.
+"""
+
 from typing import Optional
 
 from selenium.webdriver.remote.webdriver import WebDriver

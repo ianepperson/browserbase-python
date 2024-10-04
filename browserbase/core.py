@@ -1,3 +1,14 @@
+"""
+Core logic for all "Browserbase" classes.
+
+Uses a required generic ST and AT which represent the return values
+for the session() and asession() context managers.
+
+Derived classes are generally limited to defining the session and asession
+logic, and all other logic is defined here - including validating
+the appropriate API key, Project ID and other shared utilities.
+"""
+
 import abc
 import os
 from contextlib import asynccontextmanager, contextmanager
@@ -112,37 +123,8 @@ class BrowserbaseCore(abc.ABC, Generic[ST, AT]):
         return f"<{cls_name}(project_id={self.project_id})>"
 
     #
-    # Session management utilities
+    # Session management
     #
-
-    def get_http_headers(
-        self, session: Optional[BaseSession] = None
-    ) -> Headers:
-        """
-        Get the headers necessary for HTTP communication to the API.
-
-        This will include the required API key.
-        """
-        headers = Headers({"x-bb-api-key": self._api_key})
-        if session is not None and session.id:
-            headers["session-id"] = session.id
-
-        return headers
-
-    def get_cdp_url(
-        self, session: Optional[BaseSession] = None, **kwargs
-    ) -> str:
-        """
-        Get the Chrome Dev Protocol URL
-
-        If a session is provided, gets the URL for the given session.
-        Any additional arguments are treated as url parameters.
-        """
-        kwargs["apiKey"] = self._api_key
-        if session:
-            kwargs["sessionId"] = session.id
-
-        return f"{SESSION_CDP_URL}?{urlencode(kwargs)}"
 
     @contextmanager
     def _session_manager(self, session: ST):
@@ -189,6 +171,8 @@ class BrowserbaseCore(abc.ABC, Generic[ST, AT]):
         >>> with bbase.session() as session:
                 print(session.id)
         """
+        # A derived class will create the session from the given options,
+        # then use the _session_manager to create the context manager.
 
     @abc.abstractmethod
     async def asession(
@@ -207,6 +191,45 @@ class BrowserbaseCore(abc.ABC, Generic[ST, AT]):
         >>> async with bbase.session() as session:
                 print(session.id)
         """
+        # A derived class will create the session from the given options,
+        # then use the _asession_manager to create the async context manager.
+
+    #
+    # Session management utilities for use in a session object
+    #
+
+    def get_http_headers(
+        self, session: Optional[BaseSession] = None
+    ) -> Headers:
+        """
+        Get the headers necessary for HTTP communication to the API.
+
+        This will include the required API key.
+        """
+        headers = Headers({"x-bb-api-key": self._api_key})
+        if session is not None and session.id:
+            headers["session-id"] = session.id
+
+        return headers
+
+    def get_cdp_url(
+        self, session: Optional[BaseSession] = None, **kwargs
+    ) -> str:
+        """
+        Get the Chrome Dev Protocol URL
+
+        If a session is provided, gets the URL for the given session.
+        Any additional arguments are treated as url parameters.
+        """
+        kwargs["apiKey"] = self._api_key
+        if session:
+            kwargs["sessionId"] = session.id
+
+        return f"{SESSION_CDP_URL}?{urlencode(kwargs)}"
+
+    #
+    # Session management commands
+    #
 
     def list_sessions(
         self, status: Optional[SESSIONSTATUS] = None

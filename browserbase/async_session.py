@@ -1,3 +1,7 @@
+"""
+Implementation of the BaseSession that performs asyncronous API interactions.
+"""
+
 from logging import getLogger
 
 import httpx
@@ -24,7 +28,7 @@ class AsyncSession(BaseSession):
     """
 
     #
-    # Session management - Sync
+    # Session management
     #
 
     async def start(self) -> str:
@@ -67,6 +71,10 @@ class AsyncSession(BaseSession):
             response.raise_for_status()
 
         self._api_response = SessionResponse.model_validate_json(response.text)
+
+    #
+    # Other session interactions
+    #
 
     async def get_zipped_downloads(self, file_io) -> None:
         """
