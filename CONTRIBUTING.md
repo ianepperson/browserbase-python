@@ -76,11 +76,14 @@ Coverage should always be over 90%. At the time of this writing, it's 93%
 In general, each class resides in its own file. The `__init__.py` file in any given folder will import
 the items that are to be used by the consumers of this package.
 
+#### Browserbase
 
 * `core.BrowserbaseCore`: The abstract class that all Browserbase classes inherit from.
   * `browserbase.Browserbase`: The most simple implementation of the above.
   * `playwright.pl_browserbase.Browserbase`: Implementation that also manages Playwright sessions.
   * `selenium.sl_browserbase.Browserbase`: Implementation that also manages Selenium sessions.
+
+#### Session
 
 * `base_session.BaseSession`: Base class for all sessions. Implments no API interactions.
   * `sync_session.SyncSession`: Implements all session-specific API interactions.
